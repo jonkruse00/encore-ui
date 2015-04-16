@@ -1,0 +1,133 @@
+
+// Adapted from https://github.com/angular/material/commits/master/src/core/style/layout.scss
+// commit 4216d242d78f1bdadd89ebd59e1d80b9cc4f2978
+
+@import 'src/layout/layout.less';
+
+// Responsive attributes
+// ------------------------------
+
+[layout-padding] > [flex-sm],
+[layout-padding] > [flex-lt-md]
+{
+  padding: @layout-gutter-width / 4;
+}
+[layout-padding] > [flex-gt-sm],
+[layout-padding] > [flex-md],
+[layout-padding] > [flex-lt-lg]
+{
+  padding: @layout-gutter-width / 2;
+}
+[layout-padding] > [flex-gt-md],
+[layout-padding] > [flex-lg]
+{
+  padding: @layout-gutter-width / 1;
+}
+
+[layout-margin] > [flex-sm],
+[layout-margin] > [flex-lt-md]
+{
+  margin: @layout-gutter-width / 4;
+}
+[layout-margin] > [flex-gt-sm],
+[layout-margin] > [flex-md],
+[layout-margin] > [flex-lt-lg] {
+  margin: @layout-gutter-width / 2;
+}
+[layout-margin] > [flex-gt-md],
+[layout-margin] > [flex-lg]
+{
+  margin: @layout-gutter-width / 1;
+}
+
+
+/**
+ * `hide-gt-sm show-gt-lg` should hide from 600px to 1200px
+ * `show-md hide-gt-sm` should show from 0px to 960px and hide at > 960px
+ * `hide-gt-md show-gt-sm` should show everywhere (show overrides hide)`
+ */
+
+
+// SMALL SCREEN
+@media (max-width: (@layout-breakpoint-sm - 1)) {
+  [hide-sm], [hide] {
+    &:not([show-sm]):not([show]) {
+      display: none;
+    }
+  }
+
+  .flex-order-for-name(sm);
+  .layout-align-for-name(sm);
+  .layout-for-name(sm);
+  .offset-for-name(sm);
+  .flex-properties-for-name(sm);
+}
+
+// BIGGER THAN SMALL SCREEN
+@media (min-width: @layout-breakpoint-sm) {
+  .flex-order-for-name(gt-sm);
+  .layout-align-for-name(gt-sm);
+  .layout-for-name(gt-sm);
+  .offset-for-name(gt-sm);
+  .flex-properties-for-name(gt-sm);
+}
+
+// MEDIUM SCREEN
+@media (min-width: @layout-breakpoint-sm) and (max-width: (@layout-breakpoint-md - 1)) {
+  [hide], [hide-gt-sm] {
+    &:not([show-gt-sm]):not([show-md]):not([show]) {
+      display: none;
+    }
+  }
+  [hide-md]:not([show-md]):not([show]) {
+    display: none;
+  }
+
+  .flex-order-for-name(md);
+  .layout-align-for-name(md);
+  .layout-for-name(md);
+  .offset-for-name(md);
+  .flex-properties-for-name(md);
+}
+
+// BIGGER THAN MEDIUM SCREEN
+@media (min-width: @layout-breakpoint-md) {
+  .flex-order-for-name(gt-md);
+  .layout-align-for-name(gt-md);
+  .layout-for-name(gt-md);
+  .offset-for-name(gt-md);
+  .flex-properties-for-name(gt-md);
+}
+
+// LARGE SCREEN
+@media (min-width: @layout-breakpoint-md) and (max-width: (@layout-breakpoint-lg - 1)) {
+  [hide], [hide-gt-sm], [hide-gt-md] {
+    &:not([show-gt-sm]):not([show-gt-md]):not([show-lg]):not([show]) {
+      display: none;
+    }
+  }
+  [hide-lg]:not([show-lg]):not([show]) {
+    display: none;
+  }
+
+  .flex-order-for-name(lg);
+  .layout-align-for-name(lg);
+  .layout-for-name(lg);
+  .offset-for-name(lg);
+  .flex-properties-for-name(lg);
+}
+
+// BIGGER THAN LARGE SCREEN
+@media (min-width: @layout-breakpoint-lg) {
+  [hide-gt-sm], [hide-gt-md], [hide-gt-lg], [hide] {
+    &:not([show-gt-sm]):not([show-gt-md]):not([show-gt-lg]):not([show]) {
+      display: none;
+    }
+  }
+
+  .flex-order-for-name(gt-lg);
+  .layout-align-for-name(gt-lg);
+  .layout-for-name(gt-lg);
+  .offset-for-name(gt-lg);
+  .flex-properties-for-name(gt-lg);
+}

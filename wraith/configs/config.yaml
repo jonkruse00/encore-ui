@@ -23,6 +23,7 @@ paths:
   configs: "/#/component/configs"
   grid: "/#/component/grid"
   hotkeys: "/#/component/hotkeys"
+  layout: "/#/component/layout"
   metadata: "/#/component/metadata"
   progressbar: "/#/component/progressbar"
   rxAccountInfo: "/#/component/rxAccountInfo"

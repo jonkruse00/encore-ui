@@ -15,8 +15,10 @@ module.exports = {
         return connect.static(require('path').resolve(dir));
     },
     fileName: 'encore-ui-<%= pkg.version %>',
+    fileNameResp: 'encore-ui-resp-<%= pkg.version %>',
     fileNameTpl: 'encore-ui-tpls-<%= pkg.version %>',
     cssMapName: '<%= config.fileName %>.css.map',
+    cssMapNameResp: '<%= config.fileNameResp %>.css.map',
 
     // Will be filled in by shipit task
     latestTag: '',
@@ -46,6 +48,7 @@ module.exports = {
     styleguideLess: 'demo/assets/demo.less',
     tmp: '<%= config.build %>/tmp',
     tmpLess: '<%= config.tmp %>/encore-ui.less',
+    tmpLessResp: '<%= config.tmp %>/encore-ui-resp.less',
     // http://www.regexr.com/395kl
     versionRegEx: /-(?:\d+\.){2}\d+(?:-\d+)*/g
 };

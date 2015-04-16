@@ -13,6 +13,19 @@ module.exports = {
         }
     },
 
+    encoreResp: {
+        options: {
+            sourceMap: true,
+            sourceMapFilename: '<%= config.dist %>/<%= config.cssMapNameResp %>',
+            sourceMapURL: '<%= config.cssMapNameResp %>',
+            outputSourceFiles: 'true',
+            paths: ['src/styles/', 'node_modules/normalize.css/']
+        },
+        files: {
+            '<%= config.dist %>/<%= config.fileNameResp %>.css': ['<%= config.tmpLessResp %>']
+        }
+    },
+
     styleguide: {
         files: {
             '<%= config.styleguideCss %>': '<%= config.styleguideLess %>'

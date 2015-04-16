@@ -170,6 +170,10 @@ angular.module('demoApp', ['encore.ui', 'ngRoute'])
                             linkText: 'Typography'
                         },
                         {
+                            href: '#/styleguide/basics#flexbox-grid',
+                            linkText: 'Flexbox Grid'
+                        },
+                        {
                             href: '#/styleguide/basics#heading-title-styles',
                             linkText: 'Header & Title Styles'
                         },

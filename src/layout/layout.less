@@ -1,0 +1,196 @@
+// Adapted from https://github.com/angular/material/commits/master/src/core/style/layout.scss
+// commit 4216d242d78f1bdadd89ebd59e1d80b9cc4f2978
+
+@import 'flexbox';
+@import 'mixins';
+@import 'vars';
+
+// Layout
+// ------------------------------
+
+[layout] {
+  .box-sizing(border-box);
+  .flexbox;
+}
+
+[layout="column"] {
+  .flex-direction(column);
+}
+
+[layout="row"] {
+  .flex-direction(row);
+}
+
+[layout-padding],
+[layout-padding] > [flex] {
+  padding: @layout-gutter-width / 2;
+}
+
+[layout-margin],
+[layout-margin] > [flex] {
+  margin: @layout-gutter-width / 2;
+}
+
+[layout-wrap] {
+  .flex-wrap(wrap);
+}
+
+[layout-fill] {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+}
+@-moz-document url-prefix() {
+  [layout-fill] {
+    margin: 0;
+    width: 100%;
+    min-height: auto;
+    height: inherit;
+  }
+}
+
+
+// Used to concatenate selectors with '-' delimiter or without if no value provided
+// Only works for variable name @selector
+.concat-selector(@base, @value) when not (@value = null) {
+  @selector: ~'@{base}-@{value}';
+}
+.concat-selector(@base, @value) when (@value = null) {
+  @selector: ~'@{base}';
+}
+
+
+.flex-order-for-name(@suffix: null) {
+  .concat-selector('flex-order', @suffix);
+  .loop (@i) when (@i < 10) {
+    [@{selector}="@{i}"] { order: @i; }
+    .loop (@i + 1);
+  }
+  .loop (0);
+}
+
+.layout-for-name(@name) {
+  @selector: ~'layout-@{name}';
+  [@{selector}] {
+    .box-sizing(border-box);
+    .flexbox;
+  }
+  [@{selector}="column"] {
+    .flex-direction(col);
+  }
+  [@{selector}="row"] {
+    .flex-direction(row);
+  }
+}
+
+.offset-for-name(@suffix: null) {
+  .concat-selector('flex-offset', @suffix);
+  .loop (@i) when (@i < 20) {
+    @offset: @i * 5;
+    [@{selector}="@{offset}"] {
+      margin-left: ~"@{offset}%";
+    }
+    .loop (@i + 1);
+  }
+  .loop (1);
+
+  [@{selector}="33"], [@{selector}="34"] {
+    margin-left: 33.33%;
+  }
+  [@{selector}="66"], [@{selector}="67"] {
+    margin-left: 66.66%;
+  }
+}
+
+
+.flex-properties-for-name(@suffix: null) {
+  .concat-selector('flex', @suffix);
+
+  [@{selector}] {
+    .box-sizing(border-box);
+    .flex(1);
+  }
+
+  // (0-20) * 5 = 0-100%
+  .loop (@i) when (@i < 21) {
+    @flex: @i * 5;
+    [@{selector}="@{flex}"] {
+      .flex(0 0 ~'@{flex}%');
+    }
+    [layout="row"] > [@{selector}="@{flex}"] {
+      max-width: ~'@{flex}%';
+    }
+    [layout="column"] > [@{selector}="@{flex}"] {
+      max-height: ~'@{flex}%';
+    }
+    .loop (@i + 1);
+  }
+  .loop (0);
+
+  [@{selector}="33"], [@{selector}="34"] {
+    .flex(0 0 33.33%);
+  }
+  [@{selector}="66"], [@{selector}="67"] {
+    .flex(0 0 66.66%);
+  }
+
+  [layout="row"] {
+    > [@{selector}="33"], > [@{selector}="34"] {
+      max-width: 33.33%;
+    }
+    > [@{selector}="66"], > [@{selector}="67"] {
+      max-width: 66.66%;
+    }
+  }
+  [layout="column"] {
+    > [@{selector}="33"], > [@{selector}="34"] {
+      max-height: 33.33%;
+    }
+    > [@{selector}="66"], > [@{selector}="67"] {
+      max-height: 66.66%;
+    }
+  }
+}
+
+
+.layout-align-for-name(@suffix: null) {
+  .concat-selector('layout', @suffix);
+
+  [@{selector}="row"] {
+    .concat-selector('layout-align', @suffix);
+
+    &[@{selector}~="left"]    { .justify-content(flex-start); }
+    &[@{selector}~="center"]  { .justify-content(center); }
+    &[@{selector}~="right"]   { .justify-content(flex-end); }
+    &[@{selector}~="justify"] { .justify-content(space-between); }
+    &[@{selector}~="spread"]  { .justify-content(space-around); }
+
+    &[@{selector}~="top"]     { .align-items(flex-start); }
+    &[@{selector}~="middle"]  { .align-items(center); }
+    &[@{selector}~="bottom"]  { .align-items(flex-end); }
+    &[@{selector}~="stretch"] { .align-items(stretch); }
+  }
+
+  [@{selector}="column"] {
+    .concat-selector('layout-align', @suffix);
+
+    &[@{selector}~="top"]     { .justify-content(flex-start); }
+    &[@{selector}~="middle"]  { .justify-content(center); }
+    &[@{selector}~="bottom"]  { .justify-content(flex-end); }
+    &[@{selector}~="justify"] { .justify-content(space-between); }
+    &[@{selector}~="spread"]  { .justify-content(space-around); }
+
+    &[@{selector}~="left"]    { .align-items(flex-start); }
+    &[@{selector}~="center"]  { .align-items(center); }
+    &[@{selector}~="right"]   { .align-items(flex-end); }
+    &[@{selector}~="stretch"] { .align-items(stretch); }
+  }
+}
+
+// Flex attributes for layout children
+// ------------------------------
+
+.flex-properties-for-name();
+.layout-align-for-name();
+.flex-order-for-name();
+.offset-for-name();
