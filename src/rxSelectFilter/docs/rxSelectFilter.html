@@ -1,0 +1,42 @@
+<!-- Sample HTML goes here as a live example of how the component can be used -->
+<div ng-controller="rxSelectFilterCtrl">
+    <h3 class="title">Multi-Select Input</h3>
+    <rx-form-item label="Classification">
+        <rx-multi-select ng-model="classification">
+            <rx-select-option value="A">Type A</rx-select-option>
+            <rx-select-option value="B">Type B</rx-select-option>
+            <rx-select-option value="C">Type C</rx-select-option>
+        </rx-multi-select>
+        [{{ classification.join(', ') }}]
+    </rx-form-item>
+
+    <h3 class="title">Filtered Table</h3>
+    <table class="table-striped">
+        <thead>
+            <th colspan="6" class="filter-header">
+                <rx-select-filter filter="filter"></rx-select-filter>
+            </th>
+            <tr>
+                <th>Account</th>
+                <th>Status</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ticket in tickets | Apply:filter">
+                <td>{{ticket.account}}</td>
+                <td>{{ticket.status}}</td>
+                <td>{{ticket.description}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<style>
+    rx-multi-select ul {
+        z-index: 2;
+    }
+
+    .status-filter .rx-multi-select {
+        width: 120px;
+    }
+</style>

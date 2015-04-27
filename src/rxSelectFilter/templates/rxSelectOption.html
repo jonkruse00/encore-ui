@@ -1,0 +1,7 @@
+<li class="rx-select-option">
+    <label>
+        <input type="checkbox" ng-model="isSelected" ng-click="toggle()" />
+        <span ng-if="!transclusion">{{value | titleize}}</span>
+        <span ng-transclude></span>
+    </label>
+</li>
