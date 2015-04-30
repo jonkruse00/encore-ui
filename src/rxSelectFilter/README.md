@@ -1,6 +1,6 @@
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-A select dropdown for table filtering.
+A multi-select dropdown for table filtering.
 
 # Services
 

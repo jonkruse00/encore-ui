@@ -2,13 +2,13 @@
 <div ng-controller="rxSelectFilterCtrl">
     <h3 class="title">Multi-Select Input</h3>
     <rx-form-item label="Classification">
-        <rx-multi-select ng-model="classification">
+        <rx-multi-select ng-model="data.classification">
             <rx-select-option value="A">Type A</rx-select-option>
             <rx-select-option value="B">Type B</rx-select-option>
             <rx-select-option value="C">Type C</rx-select-option>
         </rx-multi-select>
-        [{{ classification.join(', ') }}]
     </rx-form-item>
+    <span>Model value: [{{ data.classification.join(', ') }}]</span>
 
     <h3 class="title">Filtered Table</h3>
     <table class="table-striped">

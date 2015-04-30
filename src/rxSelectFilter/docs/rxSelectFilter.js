@@ -2,6 +2,10 @@
 
 // This file is used to help build the 'demo' documentation page and should be updated with example code
 function rxSelectFilterCtrl ($scope, SelectFilter) {
+    $scope.data = {
+        classification: []
+    };
+
     $scope.filter = SelectFilter.create({
         properties: ['account', 'status'],
         selected: {
