@@ -41,43 +41,49 @@ angular.module('encore.ui.rxSelectFilter', ['encore.ui.rxMisc'])
  * @method create(options) - Create a filter that tracks the provided properties.
  */
 .service('SelectFilter', function () {
-    var SelectFilter = {
-        init: function (list) {
-            var self = this;
-            this.properties.forEach(function (property) {
-                if (_.isUndefined(self.available[property])) {
-                    self.available[property] = _.uniq(_.pluck(list, property));
-                }
-                if (_.isUndefined(self.selected[property])) {
-                    self.selected[property] = _.clone(self.available[property]);
-                }
-            });
-        },
-        isItemValid: function (item) {
-            var self = this;
-            return this.properties.every(function (property) {
-                return _.contains(self.selected[property], item[property]);
-            });
-        },
-        applyTo: function (list) {
-            if (this.firstRun) {
-                this.firstRun = false;
-                this.init(list);
-            }
-            return list.filter(this.isItemValid.bind(this));
-        }
-    };
-
     return {
         create: function (options) {
             options = _.defaults(options, {
                 properties: [],
                 available: {},
-                selected: {}
+                selected: _.isUndefined(options.available) ? {} : _.cloneDeep(options.available)
             });
-            options.firstRun = true;
 
-            return _.create(SelectFilter, options);
+            var filter = _.cloneDeep(options);
+
+            var firstRun = true;
+
+            function init (list) {
+                filter.properties.forEach(function (property) {
+                    if (_.isUndefined(filter.available[property])) {
+                        filter.available[property] = _.uniq(_.pluck(list, property));
+                    }
+
+                    // Check `options.selected` instead of `filter.selected` because the latter
+                    // is used as the model for `<rx-multi-select>`, which initializes its
+                    // model to an empty array. However, the intent is select all options
+                    // initially when left unspecified (preferred default behavior).
+                    if (_.isUndefined(options.selected[property])) {
+                        filter.selected[property] = _.clone(filter.available[property]);
+                    }
+                });
+            }
+
+            function isItemValid (item) {
+                return filter.properties.every(function (property) {
+                    return _.contains(filter.selected[property], item[property]);
+                });
+            }
+
+            filter.applyTo = function (list) {
+                if (firstRun) {
+                    firstRun = false;
+                    init(list);
+                }
+                return list.filter(isItemValid);
+            };
+
+            return filter;
         }
     };
 })

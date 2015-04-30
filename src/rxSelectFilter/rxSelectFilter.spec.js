@@ -167,80 +167,47 @@ describe('SelectFilter', function () {
         });
     });
 
-    describe('.init', function () {
-
-        beforeEach(function () {
-            filter.init([
-                { status: 'ENABLED', type: 'COMPUTER' },
-                { status: 'DISABLED', type: 'SWITCH' }
-            ]);
-        });
-
-        it('determines the available options for each property', function () {
-            expect(filter.available).to.eql({
-                status: ['ENABLED', 'DISABLED'],
-                type: ['COMPUTER', 'SWITCH']
-            });
-        });
-
-        it('selects all the options if not already specified', function () {
-            expect(filter.selected).to.eql({
-                status: ['ENABLED'],
-                type: ['COMPUTER', 'SWITCH']
-            });
-        });
-
-    });
-
-    describe('.isItemValid', function () {
-
-        beforeEach(function () {
-            filter.selected.type = ['COMPUTER'];
-        });
-
-        it('returns true when all the properties are selected', function () {
-            expect(filter.isItemValid({
-                status: 'ENABLED',
-                type: 'COMPUTER'
-            })).to.be.true;
-        });
-
-        it('returns false when any property is not selected', function () {
-            expect(filter.isItemValid({
-                status: 'DISABLED',
-                type: 'COMPUTER'
-            }), 'DISABLED, COMPUTER').to.be.false;
-
-            expect(filter.isItemValid({
-                status: 'DISABLED',
-                type: 'SWITCH'
-            }), 'DISABLED, SWITCH').to.be.false;
-
-            expect(filter.isItemValid({
-                status: 'ENABLED',
-                type: 'SWITCH'
-            }), 'ENABLED, SWITCH').to.be.false;
-        });
-    });
-
     describe('.applyTo', function () {
+        var result;
+        var inputArray = [{
+            status: 'DISABLED',
+            type: 'COMPUTER'
+        }, {
+            status: 'ENABLED',
+            type: 'SWITCH'
+        }];
 
         beforeEach(function () {
-            filter.init = sinon.stub();
-            filter.isItemValid = sinon.stub().returns(false);
+            result = filter.applyTo(inputArray);
         });
 
-        it('initializes the filter on the first run only', function () {
-            filter.applyTo([]);
-            filter.applyTo([]);
-            filter.applyTo([]);
+        describe('first run', function () {
 
-            expect(filter.init).to.have.been.calledOnce;
+            it('initializes the list of available options', function () {
+                expect(filter.available).to.eql({
+                    type: ['COMPUTER', 'SWITCH'],
+                    status: ['DISABLED', 'ENABLED']
+                });
+            });
+
+            it('selects all options for properties without explicit selection', function () {
+                expect(filter.selected).to.eql({
+                    type: ['COMPUTER', 'SWITCH'],
+                    status: ['ENABLED']
+                });
+            });
+
         });
 
-        it('filters the array', function () {
-            expect(filter.applyTo(['a', 'b', 'c'])).to.eql([]);
-            expect(filter.isItemValid).to.have.been.calledThrice;
+        it('keeps items with properties that are all selected', function () {
+            expect(result).to.eql(_.rest(inputArray));
+        });
+
+        it('removes items with properties that are not selected', function () {
+            expect(filter.applyTo([{
+                type: 'SWITCH',
+                status: 'UNKNOWN'
+            }])).to.eql([]);
         });
     });
 });
