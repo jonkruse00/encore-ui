@@ -98,6 +98,7 @@ The `<tfoot>` will look like this:
                 page-tracking="pagedServers"
                 server-interface="serverInterface"
                 filter-text="searchText"
+                selections="selectFilter.selected"
                 sort-column="sort.predicate"
                 sort-direction="sort.reverse">
             </rx-paginate>
@@ -108,7 +109,9 @@ The `<tfoot>` will look like this:
 
  * `page-tracking` still receives the pager (`pagedServers` in this case) as an argument. What's new are the next four parameters.
  * `server-interface` _must_ be present. It has to be passed an object with a `getItems()` method on it. This method is what `<rx-paginate>` will use to request data from the paginated API.
- * `filter-text`, `sort-column` and `sort-direction` are all optional. If present, `<rx-paginate>` will watch the variables for changes, and will call `getItems()` for updates whenever the values change.
+ * `filter-text`, `selections`, `sort-column` and `sort-direction` are all optional. If present, `<rx-paginate>` will watch the variables for changes, and will call `getItems()` for updates whenever the values change.
+
+Note: If using `<rx-select-filter>` in the table, the `available` option passed to the `SelectFilter` constructor **must** be provided and include every property.  This is because the filter cannot reliably determine all available options from a paginated api.
 
 You will still create a `PageTracking` instance on your scope, just like in UI-based pagination:
 
@@ -124,6 +127,7 @@ The `getItems()` method is one you write on your own, and lives as an interface 
 ```
 getItems(pageNumber, itemsPerPage, {
     filterText: some_filter_search_text,
+    selections: selected_options_from_filters,
     sortColumn: the_selected_sort_column,
     sortDirection: the_direction_of_the_sort_column
 });
@@ -134,6 +138,7 @@ where:
  - `pageNumber`: the 0-based page of data that the user has clicked on/requested
  - `itemsPerPage`: the value the user currently has selected for how many items per page they wish to see
  - `filterText`: the filter search string entered by the user, if any
+ - `selections`: an object containing the item properties and their selected options
  - `sortColumn`: the name of the selected sort column, if any
  - `sortDirection`: either `'ASCENDING'` or `'DESCENDING'`
 

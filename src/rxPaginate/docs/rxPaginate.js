@@ -1,12 +1,12 @@
 /*jshint unused:false*/
 
 // This file is used to help build the 'demo' documentation page and should be updated with example code
-function rxPaginateCtrl ($scope, $q, $timeout, $filter, rxPaginateUtils, PageTracking, rxSortUtil) {
+function rxPaginateCtrl ($scope, $q, $timeout, $filter, rxPaginateUtils, PageTracking, rxSortUtil, SelectFilter) {
     $scope.pager = PageTracking.createInstance({ itemsPerPage: 3 });
 
+    var os = ['Ubuntu 12.04', 'Red Hat Enterprise Linux 6.4', 'CentOS 6.4', 'Ubuntu 13.04'];
     var makeServers = function (serverCount) {
         var servers = [];
-        var os = ['Ubuntu 12.04', 'Red Hat Enterprise Linux 6.4', 'CentOS 6.4', 'Ubuntu 13.04'];
         for (var i = 1; i < serverCount + 1; i++) {
             var server = {
                 id: i,
@@ -53,6 +53,7 @@ function rxPaginateCtrl ($scope, $q, $timeout, $filter, rxPaginateUtils, PageTra
                 var last = (added > allLazyServers.length) ? allLazyServers.length : added;
 
                 var filteredServers = $filter('filter')(allLazyServers, filterText);
+                filteredServers = $scope.osFilter.applyTo(filteredServers);
                 filteredServers = $filter('orderBy')(filteredServers, sortColumn);
 
                 // Return 100 items more than the user's `itemsPerPage`. i.e. if the
@@ -83,6 +84,12 @@ function rxPaginateCtrl ($scope, $q, $timeout, $filter, rxPaginateUtils, PageTra
     $scope.clearFilter = function () {
         $scope.data.searchText = '';
     };
+    $scope.osFilter = SelectFilter.create({
+        properties: ['os'],
+        available: {
+            os: os
+        }
+    });
     $scope.serverInterface = serverInterface;
     $scope.pagedServers = PageTracking.createInstance({ itemsPerPage: 25 });
 }

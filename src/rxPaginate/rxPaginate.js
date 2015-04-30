@@ -18,6 +18,8 @@ angular.module('encore.ui.rxPaginate', ['encore.ui.rxLocalStorage', 'debounce'])
  * of this method are described in the rxPaginate README
  * @param {Object} [filterText] The model for the table filter input, if any. This directive
  * will watch that model for changes, and request new results from the paginated API, on change
+ * @param {Object} [selections] The `selected` property of a SelectFilter instance, if one is being used.
+ * This directive will watch the filter's selections, and request new results from the paginated API, on change
  * @param {Object} [sortColumn] The model containing the current column the results should sort on.
  * This directive will watch that column for changes, and request new results from the paginated API, on change
  * @param {Object} [sortDirection] The model containing the current direction of the current sort column. This
@@ -35,6 +37,7 @@ angular.module('encore.ui.rxPaginate', ['encore.ui.rxLocalStorage', 'debounce'])
             numberOfPages: '@',
             serverInterface: '=?',
             filterText: '=?',
+            selections: '=?',
             sortColumn: '=?',
             sortDirection: '=?'
         },
@@ -76,6 +79,7 @@ angular.module('encore.ui.rxPaginate', ['encore.ui.rxLocalStorage', 'debounce'])
                     var direction = scope.sortDirection ? 'DESCENDING' : 'ASCENDING';
                     return {
                         filterText: scope.filterText,
+                        selections: scope.selections,
                         sortColumn: scope.sortColumn,
                         sortDirection: direction
                     };
@@ -114,6 +118,8 @@ angular.module('encore.ui.rxPaginate', ['encore.ui.rxLocalStorage', 'debounce'])
 
                 var textChange = debounce(notifyPageTracking, 500);
 
+                var selectionChange = debounce(notifyPageTracking, 1000);
+
                 var ifChanged = function (fn) {
                     return function (newVal,  oldVal) {
                         if (newVal !== oldVal) {
@@ -125,6 +131,10 @@ angular.module('encore.ui.rxPaginate', ['encore.ui.rxLocalStorage', 'debounce'])
                 // the PageTracker that it should go grab new items
                 if (!_.isUndefined(scope.filterText)) {
                     scope.$watch('filterText', ifChanged(textChange));
+                }
+
+                if (!_.isUndefined(scope.selections)) {
+                    scope.$watch('selections', ifChanged(selectionChange), true);
                 }
 
                 if (!_.isUndefined(scope.sortColumn)) {

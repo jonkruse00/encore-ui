@@ -243,6 +243,7 @@ describe('Pagination', function () {
                                 'page-tracking="pager" ' +
                                 'server-interface="api" ' +
                                 'filter-text="d.filter" ' +
+                                'selections="selected" ' +
                                 'sort-column="sort.predicate" ' +
                                 'sort-direction="sort.reverse" ' +
                             '></rx-paginate>',
@@ -274,6 +275,9 @@ describe('Pagination', function () {
                 scope = $rootScope.$new();
                 scope.api = api;
                 scope.d = { filter: '' };
+                scope.selected = {
+                    os: _.pluck(response.items, 'os')
+                };
                 scope.sort = {
                     predicate: 'Name',
                     reverse: false
@@ -354,6 +358,23 @@ describe('Pagination', function () {
 
             deferred.resolve(response);
             
+            scope.$apply();
+            $timeout.flush();
+            ul = el.find('ul');
+
+            expect(ul.hasClass('loading-row'), 'should hide Loading').to.be.false;
+        });
+
+        it('should set loadingState when selections changes', function () {
+            scope.selected.os = _.first(scope.selected.os);
+            scope.$apply();
+            $timeout.flush();
+            ul = el.find('ul');
+
+            expect(ul.hasClass('loading-row'), 'should show Loading').to.be.true;
+
+            deferred.resolve(response);
+
             scope.$apply();
             $timeout.flush();
             ul = el.find('ul');

@@ -1,5 +1,7 @@
 var exercise = require('../rxPaginate.exercise.js');
 var rxSortableColumn = require('../../rxSortableColumn/rxSortableColumn.page').rxSortableColumn;
+var rxSelectFilter = require('../../rxSelectFilter/rxSelectFilter.page').rxSelectFilter;
+var rxSearchBox = require('../../rxSearchBox/rxSearchBox.page').rxSearchBox;
 var Page = require('astrolabe').Page;
 
 // rowFromElement and table are anonymous page objects to assist with table data
@@ -29,12 +31,6 @@ var table = Page.create({
         }
     },
 
-    txtFilter: {
-        get: function () {
-            return element(by.model('data.searchText'));
-        }
-    },
-
     count: {
         value: function () {
             return this.tblResults.count();
@@ -54,13 +50,18 @@ var table = Page.create({
         }
     },
 
-    filter: {
+    textFilter: {
         get: function () {
-            return this.txtFilter.getAttribute('value');
+            return rxSearchBox.main.term;
         },
         set: function (filterTerm) {
-            this.txtFilter.clear();
-            this.txtFilter.sendKeys(filterTerm);
+            rxSearchBox.main.term = filterTerm;
+        }
+    },
+
+    selectFilter: {
+        value: function (filterData) {
+            rxSelectFilter.main.apply(filterData);
         }
     }
 });
@@ -88,14 +89,28 @@ describe('rxPaginate', function () {
         var osColumn = table.column('OS');
 
         beforeEach(function () {
-            table.filter = '';
+            table.textFilter = '';
+            table.selectFilter({
+                Os: { All: true }
+            });
             nameColumn.sortAscending();
         });
 
         it('should get new items when filter text is entered', function () {
-            table.filter = 'Ubuntu';
+            table.textFilter = 'Ubuntu';
             expect(table.row(0).name).to.eventually.equal('Server 3');
             expect(table.row(0).os).to.eventually.equal('Ubuntu 13.04');
+        });
+
+        it('should get new items when the select filter is used', function () {
+            table.selectFilter({
+                Os: {
+                    All: false,
+                    Centos: true
+                }
+            });
+            expect(table.row(0).name).to.eventually.equal('Server 2');
+            expect(table.row(0).os).to.eventually.equal('CentOS 6.4');
         });
 
         it('should sort the Name column descending', function () {
