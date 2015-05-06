@@ -156,7 +156,7 @@ angular.module('encore.ui.rxSelectFilter', ['encore.ui.rxMisc'])
         link: function (scope, element, attrs, controllers) {
             var selectElement = rxDOMHelper.find(element, '.rx-multi-select')[0];
 
-            var documentClickHandler = function () {
+            var documentClickHandler = function (event) {
                 if (event.target !== selectElement) {
                     scope.listDisplayed = false;
                     scope.$apply();

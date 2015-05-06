@@ -114,7 +114,7 @@ Just like `<option>`, it has a `value` attribute and uses the element's content 
 
 A replacement for `<select multiple>` when space is an issue, such as in the header of a table.
 
-The options for the control can be specified by passing an array of strings to the `options` attribute (corresponding to the options' values) or using `<rx-select-option>`s. An 'All' option is automatically set as the first option for the dropdown, which allows all options to be toggled at once.
+The options for the control can be specified by passing an array of strings (corresponding to the options' values) to the `options` attribute of the directive or using `<rx-select-option>`s. An 'All' option is automatically set as the first option for the dropdown, which allows all options to be toggled at once.
 
 The following two dropdowns are equivalent.
 ```
@@ -156,3 +156,8 @@ Merely calls the `applyTo()` method of a `SelectFilter` instance to an input arr
 ## titleize
 
 Converts a string to a title case, stripping out underscores and capitalizing words. This is used to generate the text for an `<rx-select-option>` with no content.
+
+
+# Styling
+
+Remember to adhere to the Null Pattern for [tables](#/styleguide/tables) in Encore UI.  When there are no results to populate the table, the table content should say "No [x] were found."  However, if the table is empty because of the applied filters, the message should instead say "No results match those criteria."  This has been included in the demo below for an example implemtation.

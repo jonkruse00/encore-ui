@@ -23,10 +23,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="ticket in tickets | Apply:filter">
+            <tr ng-repeat="ticket in (filteredTickets = (tickets | Apply:filter))">
                 <td>{{ticket.account}}</td>
                 <td>{{ticket.status}}</td>
                 <td>{{ticket.description}}</td>
+            </tr>
+            <tr ng-if="filteredTickets.length === 0">
+                <td colspan="6">
+                    <div ng-if="tickets.length === 0">No tickets were found.</div>
+                    <div ng-if="tickets.length !== 0">No results match those criteria.</div>
+                </td>
             </tr>
         </tbody>
     </table>
