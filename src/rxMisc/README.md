@@ -4,6 +4,15 @@ A module for shared functionality across framework components.
 A small set of functions to provide some functionality that isn't present in Angular's jQuery-lite, and other useful DOM-related functions.
 
 
+## titleize
+
+A filter that converts a string to title case, stripping out underscores and capitalizing words.  For example,
+```
+{{ 'a simple_STRING' | titleize }}
+```
+renders the string "A Simple String".
+
+
 ## rxAutoSave
 `rxAutoSave` provides a way to store values in a form for later. For instance, if a user is entering values into a form, then accidentally navigate to a new page, we likely want the values to be present again when they click the "Back" button in their browser. By correctly setting up an `rxAutoSave` instance for the form, this can happen automatically. By default, all saved values will be cleared after two days.
 

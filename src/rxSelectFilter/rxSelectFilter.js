@@ -1,24 +1,6 @@
 angular.module('encore.ui.rxSelectFilter', ['encore.ui.rxMisc'])
 /**
  * @ngdoc filter
- * @name encore.ui.rxSelectFilter:titleize
- * Convert a string to a title case, stripping out symbols and capitalizing words.
- *
- * Credit where it's due: https://github.com/epeli/underscore.string/blob/master/titleize.js
- *
- * @param {string} str The string to convert
- * @returns {string} The titleized version of the string
- */
-.filter('titleize', function () {
-    return function (str) {
-        return str.toLowerCase().replace(/_/g, ' ').replace(/(?:^|\s)\S/g, function (c) {
-            return c.toUpperCase();
-        });
-    };
-})
-
-/**
- * @ngdoc filter
  * @name encore.ui.rxSelectFilter:Apply
  * @description
  * Used to apply an instance of SelectFilter to an array.

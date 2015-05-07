@@ -153,10 +153,6 @@ Merely calls the `applyTo()` method of a `SelectFilter` instance to an input arr
 <tr ng-repeat="item in list | Apply:filter">
 ```
 
-## titleize
-
-Converts a string to a title case, stripping out underscores and capitalizing words. This is used to generate the text for an `<rx-select-option>` with no content.
-
 
 # Styling
 
