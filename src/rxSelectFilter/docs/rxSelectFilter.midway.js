@@ -19,7 +19,7 @@ describe('rxMultiSelect', function () {
 var table = Page.create({
     getDataForColumn: {
         value: function (column) {
-            return element.all(by.repeater('ticket in tickets').column(column)).map(function (cell) {
+            return element.all(by.repeater('ticket in').column(column)).map(function (cell) {
                 return cell.getText();
             }).then(_.uniq).then(_.sortBy);
         }
